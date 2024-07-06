@@ -39,3 +39,49 @@ pip install -r requirements.txt
 ├── unet_model.py          # 기본 UNet 모델 정의
 ├── utils.py               # 유틸리티 함수
 └── README.md              # 프로젝트 문서
+```
+
+사용법
+데이터 전처리
+모델 학습 전에 data_preprocess.py를 사용하여 데이터를 전처리합니다. 이 스크립트는 TIF 이미지를 로드하고 프레임을 셔플한 후 numpy 배열로 저장합니다.
+```
+python data_preprocess.py
+```
+
+모델 학습
+0_train.py를 사용하여 mmUnet 모델을 학습시킵니다. 명령줄 인수를 통해 학습 매개변수를 설정할 수 있습니다.
+```
+python 0_train.py --mode train --data_dir sample_isbi --ckpt_dir checkpoint --log_dir log --result_dir result --batch_size 4 --num_epoch 10
+```
+
+모델 테스트
+1_test.py의 --mode test 인수를 사용하여 학습된 모델을 테스트합니다.
+```
+python 1_test.py --mode test --data_dir sample_isbi --ckpt_dir checkpoint --result_dir result
+```
+
+GIF 생성
+create_gif.py를 사용하여 TIF 이미지에서 GIF를 생성합니다. 이 스크립트는 TIF 이미지를 GIF로 변환하고 Matplotlib을 사용하여 표시합니다.
+```
+python create_gif.py
+```
+
+모델 아키텍처
+모델은 models.py 파일에 정의되어 있습니다. 여기에는 다양한 변형된 UNet 모델이 포함되어 있습니다. 이 모델들은 인코더(축소 경로)와 디코더(확장 경로)로 구성되어 있으며, 각 층 사이에 스킵 연결이 있습니다. 모델은 단일 채널(그레이스케일)의 2D 의료 영상을 처리하도록 설계되었습니다.
+```
+class Multi_Unet(nn.Module):
+    ...
+```
+
+자세한 내용은 models.py 파일을 참조하십시오.
+
+감사의 말
+이 프로젝트는 의료 영상 분할을 위한 UNet 아키텍처를 사용합니다. 코드는 온라인에서 제공되는 다양한 구현 및 튜토리얼을 참고하여 작성되었습니다.
+
+이 README는 프로젝트에 대한 간략한 개요를 제공하며, 데이터 전처리, 모델 학습, 테스트 및 GIF 생성에 대한 지침과 프로젝트 구조 및 모델 아키텍처에 대한 간략한 설명을 포함합니다. **모델 정의가 `models.py` 파일에 강조되어 있음**을 명시합니다.
+
+
+
+
+
+
